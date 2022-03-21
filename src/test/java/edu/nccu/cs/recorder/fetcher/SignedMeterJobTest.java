@@ -1,22 +1,20 @@
-package edu.nccu.cs.recorder.runner;
+package edu.nccu.cs.recorder.fetcher;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
-import edu.nccu.cs.recorder.fetcher.SignedMeterJob;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Component;
 
-@Component
+@SpringBootTest
 @Slf4j
-@Profile("!test")
-public class MainRunner {
+public class SignedMeterJobTest {
 
     @Autowired
     private ApplicationContext context;
@@ -24,13 +22,13 @@ public class MainRunner {
     @Qualifier("taskExecutor")
     private ThreadPoolTaskExecutor taskExecutor;
 
-    // @Scheduled(fixedRate = 60 * 1000L)
-    @Scheduled(cron = "10 * * * * * *")
-    public void fetchSignedMeterData() throws ExecutionException, InterruptedException {
+    @Test
+    public void testRun() throws ExecutionException, InterruptedException {
         log.warn("fetch signed meter data.");
 
         SignedMeterJob job = context.getBean(SignedMeterJob.class);
         CompletableFuture<Void> compFuture = CompletableFuture.runAsync(job, taskExecutor);
         compFuture.get();
     }
+
 }

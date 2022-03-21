@@ -1,5 +1,6 @@
 package edu.nccu.cs.recorder;
 
+import org.rocksdb.RocksDB;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,10 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableAsync
 @EnableWebFlux
 public class MeterRecorderApplication {
+
+    static {
+        RocksDB.loadLibrary();
+    }
 
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(MeterRecorderApplication.class);

@@ -1,4 +1,4 @@
-package edu.nccu.cs.recorder.domain;
+package edu.nccu.cs.recorder.fetcher;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

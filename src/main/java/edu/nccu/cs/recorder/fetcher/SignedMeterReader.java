@@ -1,9 +1,8 @@
-package edu.nccu.cs.recorder.job;
+package edu.nccu.cs.recorder.fetcher;
 
-import java.net.URI;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
-import edu.nccu.cs.recorder.domain.MeterData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +16,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 @Component
 @Scope(SCOPE_PROTOTYPE)
 @Slf4j
-public class MeterReadingJob implements Callable<MeterData> {
+public class SignedMeterReader implements Supplier<SignedMeterData> {
 
     @Value("${meter.host}")
     private String meterHost;
@@ -26,17 +25,17 @@ public class MeterReadingJob implements Callable<MeterData> {
     private Integer meterPort;
 
     @Override
-    public MeterData call() throws Exception {
+    public SignedMeterData get() {
         String url = String.format("http://%s:%d", meterHost, meterPort);
         log.warn("url: {}", url);
         WebClient client = WebClient.create(url);
 
-        Mono<MeterData> resp =
+        Mono<SignedMeterData> resp =
                 client.get()
-                      .uri("/normal")
+                      .uri("/signed")
                       .accept(MediaType.APPLICATION_JSON)
                       .retrieve()
-                      .bodyToMono(MeterData.class);
+                      .bodyToMono(SignedMeterData.class);
 
         return resp.block();
     }

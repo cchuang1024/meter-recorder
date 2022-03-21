@@ -4,3 +4,6 @@ logging:
 meter:
   host: localhost
   port: 8080
+
+db:
+  root: ./DB
