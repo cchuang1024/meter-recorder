@@ -2,12 +2,15 @@ package edu.nccu.cs.recorder.fetcher;
 
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 
 import edu.nccu.cs.recorder.domain.TemporalKeyValueEntity;
 import edu.nccu.cs.recorder.exception.SystemException;
 import edu.nccu.cs.recorder.util.ByteUtils;
 import edu.nccu.cs.recorder.util.DataConvertUtils;
 import edu.nccu.cs.recorder.util.ExceptionUtils;
+import edu.nccu.cs.recorder.util.TypedPair;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,6 +74,12 @@ public class SignedMeterEntity implements TemporalKeyValueEntity {
     @Override
     public byte[] getValue() throws SystemException {
         return cborFromObject(this.data);
+    }
+
+    @Override
+    public List<TypedPair<byte[]>> getKeyValuePairs() throws SystemException {
+        return Collections.singletonList(
+                TypedPair.cons(getKey(), getValue()));
     }
 
     @Getter

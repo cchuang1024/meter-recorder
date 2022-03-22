@@ -42,6 +42,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformats-binary:2.13.2'
     implementation 'de.undercouch:bson4jackson:2.13.0'
 
+    implementation 'com.google.guava:guava:31.1-jre'
+
     implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
     implementation 'org.bouncycastle:bcprov-ext-jdk15to18:1.70'
     implementation 'org.bouncycastle:bcutil-jdk15to18:1.70'
